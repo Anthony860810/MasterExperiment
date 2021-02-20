@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-FolderPath = "D:/pythonspace/Anomaly detection/data"
+FolderPath = "/home/tony/python_project/anomaly_detection_data/data"
 FileList = os.listdir(FolderPath)
 
 
