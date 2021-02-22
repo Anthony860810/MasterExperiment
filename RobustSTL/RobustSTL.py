@@ -1,6 +1,8 @@
-from numpy.matrixlib.defmatrix import matrix
+from cvxopt import matrix
 from utils import *
 import numpy as np
+from l1_norm import l1
+
 
 def NoiseRemoval(sample, H, delta1, delta2):
     '''
@@ -33,7 +35,10 @@ def TrendExtraction(denoise_sample, seasonal_length, lambda1, lambda2):
     P = np.concatenate([M, lambda1*np.eye(denoise_sample_length-1), lambda2*D], axis=0)
     P = matrix(P)
     
-    return 0
+    delta_trend = l1(P,q)
+
+    relative_trend = GetRaltiveTrend(delta_trend)
+    return relative_trend
 
 
 def RobustSTL(input, seasonal_length, dn1, dn2, H, lambda1, lambda2):
@@ -50,6 +55,7 @@ def RobustSTL(input, seasonal_length, dn1, dn2, H, lambda1, lambda2):
     iteration = 1
     ## Step1 remove noise in input via bilateral filtering
     denoise_sample = NoiseRemoval(sample, H, dn1, dn2)
+    ## Step2 trend extraction with LAD
     detrend_sample = TrendExtraction(denoise_sample, seasonal_length, lambda1, lambda2)
     #print(len(denoise_sample))
     return "hello world"

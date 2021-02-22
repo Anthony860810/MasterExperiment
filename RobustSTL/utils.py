@@ -30,3 +30,10 @@ def GetToeplitx(shape_size, entry):
     col = np.concatenate([np.array(entry), np.zeros(width - entry_length)])
 
     return toeplitz(row, col)
+
+def GetRaltiveTrend(delta_trend):
+    init_trend = np.array([0])
+    idxs = np.arange(len(delta_trend))
+    relative_trend = np.array(list(map(lambda idx: np.sum(delta_trend[:idx]), idxs)))
+    relative_trend = np.concatenate((init_trend, relative_trend))
+    return relative_trend
