@@ -12,7 +12,7 @@ DataPath = "/home/tony/python_project/anomaly_detection_data/data/"+Data+".csv"
 def main(DataPath):
     df = pd.read_csv(DataPath)
     data = df['value'].to_numpy()
-    result = RobustSTL(data, seasonal_length=5, dn1=1.0, dn2=1.0, H=5)
+    result = RobustSTL(data, seasonal_length=5, dn1=1.0, dn2=1.0, H=5, lambda1=10, lambda2=0.5, K=2, ds1=1.0, ds2=1.0)
     #print(result)
 
 
