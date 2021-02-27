@@ -49,23 +49,30 @@ def SeasonalityExtraction(detrend_sample, seasonal_length, K, H, ds1, ds2):
     
     '''
     args:
+    - detrend_sample: time series data after remove relative trend
     - seasonal_length = T
+    - H: number of neighbors in right and left, which use in NoiseRemoval and SeasonalityExtraction
+    - K: number of neighborhoods we get from the past, which use in SeasonalityExtraction
+    - ds1: hyperparameters of bilateral filter in non-local filtering, which for distance
+    - ds2: hyperparameters of bilateral filter in non-local filtering, which for value
     '''
     def GetSeasonalityValue(center):
         idxs = GetSeasonIdx(detrend_sample_length, center, seasonal_length, K, H)
         if idxs.size == 0:
             return detrend_sample[center]
-        
+
         weight_sample = detrend_sample[idxs]
         weights = np.array(list(map(lambda j: BilateralFilter(j, center, detrend_sample[j], detrend_sample[center],ds1, ds2), idxs)))
         tilda_season = np.sum(weights * weight_sample)/np.sum(weights)
         return tilda_season
-    
+
     detrend_sample_length = len(detrend_sample)
     idx_list = np.arange(detrend_sample_length)
     tilda_season = np.array(list(map(GetSeasonalityValue, idx_list)))
-    print("tilda_season len: "+str(len(tilda_season)))
+    
     return tilda_season
+
+
 def RobustSTL(input, seasonal_length, dn1, dn2, H, lambda1, lambda2, K, ds1, ds2):
     '''
     args:
@@ -74,7 +81,7 @@ def RobustSTL(input, seasonal_length, dn1, dn2, H, lambda1, lambda2, K, ds1, ds2
     - lambda1: hyperparameters of wieght for first order regularization for trend extraction
     - lambda2: hyperparameters of wieght for second order regularization for trend extraction
     - H: number of neighbors in right and left, which use in NoiseRemoval and SeasonalityExtraction
-    - K: number of neighborhoods in the past, which use in SeasonalityExtraction
+    - K: number of neighborhoods we get from the past, which use in SeasonalityExtraction
     - ds1: hyperparameters of bilateral filter in non-local filtering, which for distance
     - ds2: hyperparameters of bilateral filter in non-local filtering, which for value
     '''
