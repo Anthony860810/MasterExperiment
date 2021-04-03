@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import os
 
 DataPath = "../YahooBenchmark/A4Benchmark/"
-OutputPath = "../../anomaly_detection_data/YahooBenchmark/A4Benchmark_l1norm_20000/"
+OutputPath = "../../anomaly_detection_data/YahooBenchmark/A4Benchmark_l1norm_50000/"
 
 
 for fileName in os.listdir(DataPath):
@@ -19,7 +19,7 @@ for fileName in os.listdir(DataPath):
 
         ones_row = np.ones((1, len(y)))
         D = scipy.sparse.spdiags(np.vstack((ones_row, -2*ones_row, ones_row)), range(3), len(y)-2, len(y))
-        vlambda = 20000
+        vlambda = 50000
         y_hat = cp.Variable(shape=len(y))
 
         objective_func = cp.Minimize(0.5*cp.sum_squares(y-y_hat)+vlambda*cp.norm(D@y_hat, 1))
@@ -29,12 +29,12 @@ for fileName in os.listdir(DataPath):
         if problem.status != cp.OPTIMAL:
             raise Exception("Solver did not converge!")
         '''plt.plot(y, linewidth=1.0, color="blue")
-        plt.plot(np.array(y_hat.value), linewidth=0.5, color="red")
+        plt.plot(np.array(y_hat.value), linewidth=1.0, color="orange")
         plt.savefig(OutputPath+fileName[:-4]+".png")
         plt.clf()
         plt.close()'''
         output = pd.DataFrame({
                         "value":y,
-                        "trend":y_hat
+                        "trend":np.array(y_hat.value)
                     })
         output.to_csv( OutputPath+fileName, index=False)

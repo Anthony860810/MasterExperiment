@@ -11,8 +11,8 @@ from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import r2_score
 
-Folder_PATH = "../YahooBenchmark/A4Benchmark/"
-
+Folder_PATH = "../YahooBenchmark/A4Benchmark_hpfilter_20000/"
+OutputPath = "../YahooBenchmark/A4Benchmark_l1norm_20000_png/"
 def Evaluation(y, y_hat):
     print("MSE: "+ str(mean_squared_error(y, y_hat)))
     print("MAE: "+ str(mean_absolute_error(y, y_hat)))
@@ -34,4 +34,11 @@ if __name__ == '__main__':
 
     model = LinearRegression().fit(x_train,y_train)
     y_hat = model.predict(x_test)
+    for i in range(len(y_hat)):
+        plt.plot(x_test[i], linewidth=1.0, color="blue")
+        plt.plot(np.array(y_test[i]), linewidth=0.7, color="#D9B300")
+        plt.plot(np.array(y_hat[i]), linewidth=0.7, color="red")
+        plt.savefig(OutputPath+str(i)+".png")
+        plt.clf()
+        plt.close()
     Evaluation(y_test, y_hat)

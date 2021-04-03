@@ -16,7 +16,7 @@ import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.dataset import TensorDataset
 
-Folder_PATH = "../YahooBenchmark/A4Benchmark/"
+Folder_PATH = "../YahooBenchmark/A4Benchmark_hpfilter_50/"
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
