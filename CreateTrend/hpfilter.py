@@ -14,14 +14,16 @@ for fileName in os.listdir(DataPath):
 
         y = df['value'].to_numpy()
         cycle, trend = sm.tsa.filters.hpfilter(y,20000)
-        '''plt.plot(df["value"], label="value")
+        plt.plot(df["value"], label="value")
         plt.plot(trend, label="trend")
-        plt.savefig(OutputPath+fileName[:-4]+".png")
+        print(type(trend))
+        plt.show()
+        '''plt.savefig(OutputPath+fileName[:-4]+".png")
         plt.clf()
-        plt.close()'''
+        plt.close()
         output = pd.DataFrame({
                         "value":y,
                         "trend":trend
                     })
         print(OutputPath+fileName)
-        output.to_csv( OutputPath+fileName, index=False)
+        output.to_csv( OutputPath+fileName, index=False)'''
